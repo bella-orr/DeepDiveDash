@@ -15,6 +15,8 @@ class startScene extends Phaser.Scene {
   // preload function is called before the scene is created
   preload(){
   //load images here
+  this.load.image("deadFish", "assets/images/dead_fish.png");
+
 
   //load spritesheets here
     this.load.spritesheet("background", "assets/sprite-sheets/background-sprite-sheet.png", {
