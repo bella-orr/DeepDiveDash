@@ -17,7 +17,7 @@ class startScene extends Phaser.Scene {
   //load images here
 
   //load spritesheets here
-    this.load.spritesheet("background", "assets/images/background-sprite-sheet.png", {
+    this.load.spritesheet("background", "assets/sprite-sheets/background-sprite-sheet.png", {
       frameWidth: 1820,
       frameHeight: 1024
     });
@@ -37,6 +37,10 @@ class startScene extends Phaser.Scene {
     //Loading game
     this.add.text(20, 20, "Loading game...");
 
+    // Start playScene after the delay
+    this.time.delayedCall(2000, () => {
+        this.scene.start("playGame");  
+      });
     //animations here
 
   }
