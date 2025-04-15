@@ -14,10 +14,10 @@ var gameSettings = {
 //Declare variable for game configuration
 //This is where the game will be configured
 var config = {
-  width: 256,
-  height: 272,
+  width: 800,
+  height: 600,
   backgroundColor: '#000000',
-  scene: [],
+  scene: [ Scene1, Scene2],
   pixelArt: true,
   physics: {
     default: "arcade",

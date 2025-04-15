@@ -5,4 +5,14 @@ class Scene2 extends Phaser.Scene{
     {
         super("playGame");
     }
+
+   
+    create()
+    {
+
+        //creates the background for the game
+        this.background = this.add.image(0, 0, "background").setOrigin(0, 0);
+
+        
+    }
 }
