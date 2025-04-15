@@ -22,6 +22,15 @@ class playScene extends Phaser.Scene{
         this.deadFish = this.add.image(Phaser.Math.Between(0, config.width), 0, "deadFish"); 
         this.deadFish.setScale(0.70);
 
+        this.fish1 = this.add.image(Phaser.Math.Between(0, config.width), 0, "fish1");
+        this.fish1.setScale(0.10);
+
+        this.fish2 = this.add.image(Phaser.Math.Between(0, config.width), 0, "fish2");
+        this.fish2.setScale(0.10);
+
+        this.fish3 = this.add.image(Phaser.Math.Between(0, config.width), 0, "fish3");
+        this.fish3.setScale(0.10);
+
 
         //loads the player/ character sprite
         this.player = this.physics.add.sprite(config.width/2, config.height * 0.8, "playerRight");
@@ -47,13 +56,18 @@ class playScene extends Phaser.Scene{
         this.cursors = this.input.keyboard.createCursorKeys();
 
         
+        
     }
 
     update()
     {
         this.movePlayer();
 
-        this.fishMovement(this.deadFish, 1);
+        //may want to create a method that assigns random speed to the fish
+        this.fishMovement(this.deadFish, 2);
+        this.fishMovement(this.fish1, 1);
+        this.fishMovement(this.fish2, 3);
+        this.fishMovement(this.fish3, 0.5);
     }
 
     //determines player movement and animation
@@ -93,6 +107,7 @@ class playScene extends Phaser.Scene{
         }
     }
 
+    
     //fish movement
     fishMovement(fish, speed)
     {

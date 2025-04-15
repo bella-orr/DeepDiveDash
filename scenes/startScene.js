@@ -16,7 +16,10 @@ class startScene extends Phaser.Scene {
   preload(){
   //load images here
   this.load.image("deadFish", "assets/images/dead_fish.png");
-
+  this.load.image("fish1", "assets/images/fish-1.png");
+  this.load.image("fish2", "assets/images/fish-2.png");
+  this.load.image("fish3", "assets/images/fish-3.png");
+  this.load.image("orangeStar", "assets/images/orange_star.png");
 
   //load spritesheets here
     this.load.spritesheet("background", "assets/sprite-sheets/background-sprite-sheet.png", {
