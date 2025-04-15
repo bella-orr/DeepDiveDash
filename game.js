@@ -8,8 +8,9 @@
 //Declare variable  for game settings
 var gameSettings = {
 //store game settings here
-
+playerSpeed: 150
 }
+
 
 //Declare variable for game configuration
 //This is where the game will be configured

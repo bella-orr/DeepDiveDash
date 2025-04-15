@@ -22,6 +22,15 @@ class startScene extends Phaser.Scene {
       frameHeight: 1024
     });
 
+    this.load.spritesheet('playerLeft', 'assets/sprite-sheets/swimming-left-sprite-sheet.png', {
+      frameWidth: 306,
+      frameHeight:313
+    });
+
+    this.load.spritesheet('playerRight', 'assets/sprite-sheets/swimming-right-sprite-sheet.png', {
+      frameWidth: 305,
+      frameHeight: 344
+    });
   //load font here
     this.load.font("arcadeFont", "assets/font/arcadeclassic.regular.ttf");
 
