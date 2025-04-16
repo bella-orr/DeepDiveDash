@@ -53,14 +53,6 @@ class playScene extends Phaser.Scene{
         this.bubble.setScale(0.08);
         this.bubble.anims.play('bubble', true); 
 
-        //bubble drops every 7 seconds
-        this.time.addEvent({
-            delay: 7000,
-            callback: this.resetBubble,
-            callbackScope: this,
-            loop: true
-        });
-
         //Pufferfish acts as an enemy to the player and causes damage
         this.pufferFish = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "pufferFish");
         this.pufferFish.setScale(0.10);
@@ -91,7 +83,7 @@ class playScene extends Phaser.Scene{
         this.player = this.physics.add.sprite(config.width/2, config.height * 0.8, "playerRight");
         this.player.setOrigin(0.5, 0.5); 
         this.player.setScale(0.25);
-        this.player.setCollideWorldBounds(true); // prevents player from going out of bounds
+         
 
         //creates the player animations
         this.anims.create({
@@ -114,7 +106,10 @@ class playScene extends Phaser.Scene{
             repeat: -1
         });
 
+        //colliders
+        this.player.setCollideWorldBounds(true);
         this.physics.add.collider(this.player, this.fishGroup, this.collectFish, null, this); //collect fish
+        this.physics.add.collider(this.player, this.bubble, this.collectBubble, null, this); //collect bubble
 
         //timer that decreses oxygen overtime
         this.time.addEvent({
@@ -188,10 +183,22 @@ class playScene extends Phaser.Scene{
         console.log("Oxygen: " + this.oxygen); //display oxygen in console but will be removed for final
         if(this.oxygen <= 0)
         {
-            this.gameOver = true; //set game over to true
+            //set game over to true
+            //this.gameOver = true;
             console.log("game over") //restart the game
         }
     }
+
+    //collects bubble
+    collectBubble(player, bubble)
+    {
+        this.oxygen += 4;
+        console.log("Oxygen: " + this.oxygen); //display oxygen in console but will be removed for final
+        this.resetFish(bubble); //reset the bubble position
+    }
+
+
+
 
     
     //fish movement
