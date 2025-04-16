@@ -27,25 +27,33 @@ class playScene extends Phaser.Scene{
         this.background = this.add.sprite(0, 0, "background").setOrigin(0, 0).setDisplaySize(config.width, config.height); 
 
         //loads the falling objects
-        this.deadFish = this.add.image(Phaser.Math.Between(0, config.width), 0, "deadFish"); 
-        this.deadFish.setScale(0.70);
 
         this.fish1 = this.add.image(Phaser.Math.Between(0, config.width), 0, "fish1");
         this.fish1.setScale(0.10);
+        this.fish1.speed = Phaser.Math.Between(1, 3); 
 
         this.fish2 = this.add.image(Phaser.Math.Between(0, config.width), 0, "fish2");
         this.fish2.setScale(0.10);
+        this.fish2.speed = Phaser.Math.Between(1, 3); 
 
         this.fish3 = this.add.image(Phaser.Math.Between(0, config.width), 0, "fish3");
         this.fish3.setScale(0.10);
+        this.fish3.speed = Phaser.Math.Between(1, 3); 
+
 
         //Pufferfish acts as an enemy to the player and causes damage
         this.pufferFish = this.add.image(Phaser.Math.Between(0, config.width), 0, "pufferFish");
         this.pufferFish.setScale(0.10);
+        this.pufferFish.speed = Phaser.Math.Between(1, 3); 
+
+        this.deadFish = this.add.image(Phaser.Math.Between(0, config.width), 0, "deadFish"); 
+        this.deadFish.setScale(0.70); 
+        this.deadFish.speed = Phaser.Math.Between(1, 3); 
 
         //creates enemy group
         this.enemies = this.physics.add.group();
         this.enemies.add(this.pufferFish);
+        this.enemies.add(this.deadFish);
 
         //sets the fish to be interactive
         this.deadFish.setInteractive();
@@ -87,10 +95,11 @@ class playScene extends Phaser.Scene{
         this.movePlayer();
 
         //may want to create a method that assigns random speed to the fish
-        this.fishMovement(this.deadFish, 2);
-        this.fishMovement(this.fish1, 1);
-        this.fishMovement(this.fish2, 3);
-        this.fishMovement(this.fish3, 0.5);
+        this.fishMovement(this.deadFish, this.deadFish.speed);
+        this.fishMovement(this.fish1, this.fish1.speed);
+        this.fishMovement(this.fish2, this.fish2.speed);
+        this.fishMovement(this.fish3, this.fish3.speed);
+        this.fishMovement(this.pufferFish, this.pufferFish.speed);
     }
 
     //determines player movement and animation
@@ -145,9 +154,10 @@ class playScene extends Phaser.Scene{
     resetFish(fish)
     {
         fish.y = 0;
-        var randomX = Phaser.Math.Between(0, config.width);
-        fish.x = randomX;
+        fish.x = Phaser.Math.Between(0, config.width);
+        fish.speed = Phaser.Math.Between(1, 3); 
     }
+    
 
     //function to handle when the player collides with an enemy
     //takes player and enemy as parameters
