@@ -29,18 +29,7 @@ class playScene extends Phaser.Scene{
         //Creates the score 
         this.scoreLabel = this.add.bitmapText(20, 20, "arcadeFont", "SCORE", 16);
         
-        //loads the decorations
-        let toggle = true; 
-        let sandWidth = 64;
-        let yPosition = config.height -64;
-
-        //alternats between sand 1 and 2
-        for(let i = 0; i < config.width; i += sandWidth)
-            {
-                let key = toggle ? "sand1" : "sand2";
-                this.add.image(i, yPosition, key).setOrigin(0, 0).setScale(1); // Adjust scale if needed
-                toggle = !toggle;
-            }
+        
         //creates the fish group
         this.fishGroup = this.physics.add.group(); 
 
@@ -63,10 +52,7 @@ class playScene extends Phaser.Scene{
         
 
 
-        //loads the bubble object for oxygen
-        this.bubble = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "bubble");
-        this.bubble.setScale(0.08);
-        this.bubble.anims.play('bubble', true); 
+        
 
         //Pufferfish acts as an enemy to the player and causes damage
         this.pufferFish = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "pufferFish");
@@ -93,12 +79,19 @@ class playScene extends Phaser.Scene{
         //this.pufferFish.setInteractive();
         //this.bubble.setInteractive();
 
+        //loads decorations behind player
+        let purpleCoral1 = this.add.image(120, config.height - 60, "purpleCoral").setOrigin(0.5, 1).setScale(1);
+        let purpleCoral2 = this.add.image(config.width - 90, config.height - 60, "purpleCoral").setOrigin(0.5, 1).setScale(1.5);
+        let orangeStar1 = this.add.image(555, config.height - 60, "orangeStar").setOrigin(0.5, 1).setScale(0.8);
+        let blueCoral = this.add.image(20, config.height - 60, "blueCoral").setOrigin(0.5, 1).setScale(1.25);
+        let smallGCoral = this.add.image(30, config.height - 60, "smallGCoral").setOrigin(0.5, 1).setScale(0.5);
+        let rock2 = this.add.image(config.width - 3, config.height - 60, "rock2").setOrigin(0.5, 1).setScale(1.8);
 
         //loads the player/ character sprite
         this.player = this.physics.add.sprite(config.width/2, config.height * 0.8, "playerRight");
         this.player.setOrigin(0.5, 0.5); 
         this.player.setScale(0.25);
-         
+
 
         //creates the player animations
         this.anims.create({
@@ -121,6 +114,31 @@ class playScene extends Phaser.Scene{
             repeat: -1
         });
 
+        //loads the bubble object for oxygen
+        this.bubble = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "bubble");
+        this.bubble.setScale(0.08);
+        this.bubble.anims.play('bubble', true); 
+
+        //loads the decorations infront of player
+        let rock1 = this.add.image(150, config.height - 60, "rock").setOrigin(0.5, 1).setScale(0.8);
+        let greenCoral1 = this.add.image(100, config.height - 60, "bigCoral").setOrigin(0.5, 1).setScale(0.8); 
+        let greenCoral2 = this.add.image(config.width - 110, config.height - 60, "bigCoral").setOrigin(0.5, 1).setScale(1);
+        
+
+        let toggle = true; 
+        let sandWidth = 64;
+        let yPosition = config.height -64;
+
+
+        //alternats between sand 1 and 2
+        for(let i = 0; i < config.width; i += sandWidth)
+            {
+                let key = toggle ? "sand1" : "sand2";
+                this.add.image(i, yPosition, key).setOrigin(0, 0).setScale(1); // Adjust scale if needed
+                toggle = !toggle;
+            }
+        
+        
         //colliders
         this.player.setCollideWorldBounds(true);
         this.physics.add.collider(this.player, this.fishGroup, this.collectFish, null, this); //collect fish

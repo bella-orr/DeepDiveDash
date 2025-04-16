@@ -18,12 +18,18 @@ class startScene extends Phaser.Scene {
   this.load.image("fish1", "assets/images/fish-1.png");
   this.load.image("fish2", "assets/images/fish-2.png");
   this.load.image("fish3", "assets/images/fish-3.png");
-  this.load.image("orangeStar", "assets/images/orange_star.png");
   this.load.image("pufferFish", "assets/images/puffer-fish.png");
+  this.load.image('eel', 'assets/images/eel.png');  
 
   this.load.image('sand1', 'assets/images/sand1.png');
   this.load.image('sand2', 'assets/images/sand2.png');
-  
+  this.load.image('bigCoral', 'assets/images/bigGreenCoral.png');
+  this.load.image('purpleCoral', 'assets/images/purpleCoral.png');
+  this.load.image('rock', 'assets/images/rock.png');
+  this.load.image("orangeStar", "assets/images/orange_star.png");
+  this.load.image("smallGCoral", "assets/images/smallGCoral.png");
+  this.load.image("blueCoral", "assets/images/blueCoral.png");
+  this.load.image("rock2", "assets/images/rock2.png");
   //load spritesheets here
     this.load.spritesheet("background", "assets/sprite-sheets/background-sprite-sheet.png", {
       frameWidth: 1820,
