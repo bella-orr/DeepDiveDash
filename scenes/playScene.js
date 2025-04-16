@@ -29,6 +29,18 @@ class playScene extends Phaser.Scene{
         //Creates the score 
         this.scoreLabel = this.add.bitmapText(20, 20, "arcadeFont", "SCORE", 16);
         
+        //loads the decorations
+        let toggle = true; 
+        let sandWidth = 64;
+        let yPosition = config.height -64;
+
+        //alternats between sand 1 and 2
+        for(let i = 0; i < config.width; i += sandWidth)
+            {
+                let key = toggle ? "sand1" : "sand2";
+                this.add.image(i, yPosition, key).setOrigin(0, 0).setScale(1); // Adjust scale if needed
+                toggle = !toggle;
+            }
         //creates the fish group
         this.fishGroup = this.physics.add.group(); 
 
@@ -36,17 +48,17 @@ class playScene extends Phaser.Scene{
 
         this.fish1 = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "fish1");
         this.fish1.setScale(0.10);
-        this.fish1.speed = Phaser.Math.Between(1, 3);
+        this.fish1.speed = Phaser.Math.Between(1, 5);
         this.fishGroup.add(this.fish1);
 
         this.fish2 = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "fish2");
         this.fish2.setScale(0.10);
-        this.fish2.speed = Phaser.Math.Between(1, 3);
+        this.fish2.speed = Phaser.Math.Between(1, 5);
         this.fishGroup.add(this.fish2);
 
         this.fish3 = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "fish3");
         this.fish3.setScale(0.10);
-        this.fish3.speed = Phaser.Math.Between(1, 3); 
+        this.fish3.speed = Phaser.Math.Between(1, 5); 
         this.fishGroup.add(this.fish3);
         
 
@@ -59,12 +71,12 @@ class playScene extends Phaser.Scene{
         //Pufferfish acts as an enemy to the player and causes damage
         this.pufferFish = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "pufferFish");
         this.pufferFish.setScale(0.10);
-        this.pufferFish.speed = Phaser.Math.Between(1, 3); 
+        this.pufferFish.speed = Phaser.Math.Between(1, 5); 
         
 
         this.deadFish = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "deadFish"); 
         this.deadFish.setScale(0.70); 
-        this.deadFish.speed = Phaser.Math.Between(1, 3); 
+        this.deadFish.speed = Phaser.Math.Between(1, 5); 
         
 
         //creates enemy group
@@ -217,7 +229,7 @@ class playScene extends Phaser.Scene{
     {
         fish.y = 0;
         fish.x = Phaser.Math.Between(0, config.width);
-        fish.speed = Phaser.Math.Between(1, 3); 
+        fish.speed = Phaser.Math.Between(1, 5); 
         fish.setVelocityX(0); 
         fish.allowGravity = false; 
     }
@@ -265,7 +277,7 @@ class playScene extends Phaser.Scene{
 
         this.resetFish(fish); 
         
-        console.log("Score: " + this.score); //display score in console but will be removed for final
+       this.scoreLabel.text = "SCORE: " + this.score; //update the score label
     }
     //function to handle reseting the player
     resetplayer(){

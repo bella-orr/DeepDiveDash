@@ -21,6 +21,9 @@ class startScene extends Phaser.Scene {
   this.load.image("orangeStar", "assets/images/orange_star.png");
   this.load.image("pufferFish", "assets/images/puffer-fish.png");
 
+  this.load.image('sand1', 'assets/images/sand1.png');
+  this.load.image('sand2', 'assets/images/sand2.png');
+  
   //load spritesheets here
     this.load.spritesheet("background", "assets/sprite-sheets/background-sprite-sheet.png", {
       frameWidth: 1820,
