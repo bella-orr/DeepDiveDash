@@ -26,6 +26,9 @@ class playScene extends Phaser.Scene{
         //loads the background
         this.background = this.add.sprite(0, 0, "background").setOrigin(0, 0).setDisplaySize(config.width, config.height); 
 
+        //Creates the score 
+        this.scoreLabel = this.add.bitmapText(20, 20, "arcadeFont", "SCORE", 16);
+        
         //creates the fish group
         this.fishGroup = this.physics.add.group(); 
 
@@ -196,9 +199,6 @@ class playScene extends Phaser.Scene{
         console.log("Oxygen: " + this.oxygen); //display oxygen in console but will be removed for final
         this.resetFish(bubble); //reset the bubble position
     }
-
-
-
 
     
     //fish movement

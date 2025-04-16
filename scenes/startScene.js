@@ -42,7 +42,7 @@ class startScene extends Phaser.Scene {
       frameHeight: 413
     });
   //load font here
-    this.load.font("arcadeFont", "assets/font/arcadeclassic.regular.ttf");
+    this.load.bitmapFont("arcadeFont", "assets/font/gameFont.png", "assets/font/gameFont.xml");
 
   //load audio here
     this.load.audio("oceanWaves", "assets/sounds/148283__rmutt__oceanwaves-5.wav");
