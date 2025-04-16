@@ -17,7 +17,7 @@ class playScene extends Phaser.Scene{
     {
         //sets variables for game settings
         this.score = 0; //score variable
-        this.health = 3; //health variable
+        this.health = 5; //health variable
         this.oxygen = 100; //oxygen variable
         this.gameOver = false; //game over variable
 
@@ -136,7 +136,7 @@ class playScene extends Phaser.Scene{
         let yPosition = config.height -64;
 
 
-        //alternats between sand 1 and 2
+        //alternates between sand 1 and 2
         for(let i = 0; i < config.width; i += sandWidth)
             {
                 let key = toggle ? "sand1" : "sand2";
@@ -149,6 +149,7 @@ class playScene extends Phaser.Scene{
         this.player.setCollideWorldBounds(true);
         this.physics.add.collider(this.player, this.fishGroup, this.collectFish, null, this); //collect fish
         this.physics.add.collider(this.player, this.bubble, this.collectBubble, null, this); //collect bubble
+        this.physics.add.collider(this.player, this.enemies, this.hurtPlayer, null, this); //hurt player
 
         //timer that decreses oxygen overtime
         this.time.addEvent({
@@ -268,6 +269,9 @@ class playScene extends Phaser.Scene{
         this.resetFish(enemy); //reset the enemy position
         this.health -= 1; //subtracts 1 from health
 
+        //output for testing
+        console.log("Health: " + this.health); //display health in console but will be removed for final
+
         //don't hurt the player if it is invincible
         if(this.player.alpha < 1){
         return;
@@ -284,6 +288,8 @@ class playScene extends Phaser.Scene{
         loop: false
         });
     }
+
+  
 
     //function to handle collecting fish
     collectFish(player, fish) 
@@ -318,7 +324,7 @@ class playScene extends Phaser.Scene{
     }
 
     //function to handle reseting the player
-    resetplayer(){
+    resetPlayer(){
     //enable the player again
     var x = config.width / 2 - 8;
     var y = config.height + 64;
@@ -330,7 +336,7 @@ class playScene extends Phaser.Scene{
     //move the player back to its original position
         var tween = this.tweens.add({
             targets: this.player,
-            y: config.height - 64,
+            y: config.height * 0.8,
             ease: 'Power1',
             duration: 1500,
             repeat:0,
