@@ -1,6 +1,5 @@
 // Assignment: Deep Dive Dash Final Project
 // Contributors:  Addison Hatfield (Lead Game Developer), Bella Orr (Game Developer/ Tester), Nicole Miller (Lead Game Designer), Peter Nguyen 
-// (Game Designer/Documentation)
 // Course: IT3049C
 // Professor: Professor Andrew Lively
 // Due Date: 4/30/2025
@@ -16,6 +15,14 @@ class playScene extends Phaser.Scene{
    
     create()
     {
+        //sets variables for game settings
+        this.score = 0; //score variable
+        this.health = 3; //health variable
+        this.oxygen = 100; //oxygen variable
+        this.gameOver = false; //game over variable
+
+        
+        //loads the background
         this.background = this.add.sprite(0, 0, "background").setOrigin(0, 0).setDisplaySize(config.width, config.height); 
 
         //loads the falling objects
@@ -118,6 +125,7 @@ class playScene extends Phaser.Scene{
         }
     }
 
+    //resets the fish to the top of the screen at a random x position
     resetFish(fish)
     {
         fish.y = 0;

@@ -1,6 +1,5 @@
 // Assignment: Deep Dive Dash Final Project
 // Contributors:  Addison Hatfield (Lead Game Developer), Bella Orr (Game Developer/ Tester), Nicole Miller (Lead Game Designer), Peter Nguyen 
-// (Game Designer/Documentation)
 // Course: IT3049C
 // Professor: Professor Andrew Lively
 // Due Date: 4/30/2025
@@ -20,6 +19,7 @@ class startScene extends Phaser.Scene {
   this.load.image("fish2", "assets/images/fish-2.png");
   this.load.image("fish3", "assets/images/fish-3.png");
   this.load.image("orangeStar", "assets/images/orange_star.png");
+  this.load.image("pufferFish", "assets/images/puffer-fish.png");
 
   //load spritesheets here
     this.load.spritesheet("background", "assets/sprite-sheets/background-sprite-sheet.png", {
