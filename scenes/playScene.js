@@ -26,8 +26,14 @@ class playScene extends Phaser.Scene{
         //loads the background
         this.background = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0, 0); 
 
+        //score background
+        this.scoreBG = this.add.graphics();
+        this.scoreBG.fillStyle(0xb18bdc, 0.8); 
+        this.scoreBG.fillRoundedRect(config.width - 230, 15, 200, 30, 10);
+
         //Creates the score 
-        this.scoreLabel = this.add.bitmapText(20, 20, "arcadeFont", "SCORE", 16);
+        this.scoreLabel = this.add.bitmapText(config.width - 205, 20, "arcadeFont", "", 12);
+        this.scoreLabel.setOrigin(0, 0); 
         
         
         //creates the fish group
@@ -296,9 +302,21 @@ class playScene extends Phaser.Scene{
             }
 
         this.resetFish(fish); 
-        
-       this.scoreLabel.text = "SCORE: " + this.score; //update the score label
+       
+        //updates the score label
+    var scoreFormatted = this.zeroPad(this.score, 6); 
+       this.scoreLabel.text = "SCORE: " +  scoreFormatted;
     }
+
+    //zero pad
+    zeroPad(number, size) {
+        var stringNumber = String(number);
+        while (stringNumber.length < (size || 2)) {
+            stringNumber = "0" + stringNumber;
+        }
+        return stringNumber;
+    }
+
     //function to handle reseting the player
     resetplayer(){
     //enable the player again
