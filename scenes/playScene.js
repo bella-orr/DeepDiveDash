@@ -24,7 +24,7 @@ class playScene extends Phaser.Scene{
         
 
         //loads the background
-        this.background = this.add.sprite(0, 0, "background").setOrigin(0, 0).setDisplaySize(config.width, config.height); 
+        this.background = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0, 0); 
 
         //Creates the score 
         this.scoreLabel = this.add.bitmapText(20, 20, "arcadeFont", "SCORE", 16);
@@ -170,6 +170,8 @@ class playScene extends Phaser.Scene{
         this.fishMovement(this.fish3, this.fish3.speed);
         this.fishMovement(this.pufferFish, this.pufferFish.speed);
         this.fishMovement(this.bubble, 1);
+
+        this.background.tilePositionX -= 0.5; 
     }
 
     //determines player movement and animation
