@@ -47,6 +47,11 @@ class playScene extends Phaser.Scene{
         this.enemies = this.physics.add.group();
         this.enemies.add(this.pufferFish);
 
+        //sets the fish to be interactive
+        this.deadFish.setInteractive();
+        this.fish1.setInteractive();
+        this.fish2.setInteractive();
+        this.fish3.setInteractive();
         this.pufferFish.setInteractive();
 
 
