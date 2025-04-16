@@ -36,6 +36,11 @@ class startScene extends Phaser.Scene {
       frameWidth: 305,
       frameHeight: 344
     });
+
+    this.load.spritesheet('bubble', 'assets/sprite-sheets/Bubble-Sprite-Sheet.png', {
+      frameWidth: 396,
+      frameHeight: 413
+    });
   //load font here
     this.load.font("arcadeFont", "assets/font/arcadeclassic.regular.ttf");
 

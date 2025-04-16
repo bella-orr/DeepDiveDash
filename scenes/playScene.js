@@ -40,6 +40,18 @@ class playScene extends Phaser.Scene{
         this.fish3.setScale(0.10);
         this.fish3.speed = Phaser.Math.Between(1, 3); 
 
+        //loads the bubble object for oxygen
+        this.bubble = this.add.sprite(Phaser.Math.Between(0, config.width), 0, "bubble");
+        this.bubble.setScale(0.08);
+        this.bubble.anims.play('bubble', true); 
+
+        //bubble drops every 7 seconds
+        this.time.addEvent({
+            delay: 7000,
+            callback: this.resetBubble,
+            callbackScope: this,
+            loop: true
+        });
 
         //Pufferfish acts as an enemy to the player and causes damage
         this.pufferFish = this.add.image(Phaser.Math.Between(0, config.width), 0, "pufferFish");
@@ -55,12 +67,13 @@ class playScene extends Phaser.Scene{
         this.enemies.add(this.pufferFish);
         this.enemies.add(this.deadFish);
 
-        //sets the fish to be interactive
+        //sets the objects to be interactive
         this.deadFish.setInteractive();
         this.fish1.setInteractive();
         this.fish2.setInteractive();
         this.fish3.setInteractive();
         this.pufferFish.setInteractive();
+        this.bubble.setInteractive();
 
 
         //loads the player/ character sprite
@@ -83,6 +96,13 @@ class playScene extends Phaser.Scene{
             repeat: -1
         });
 
+        this.anims.create({
+            key: 'bubble',
+            frames: this.anims.generateFrameNumbers('bubble'),
+            frameRate: 20,
+            repeat: -1
+        });
+
         //allows for player movement
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -100,6 +120,7 @@ class playScene extends Phaser.Scene{
         this.fishMovement(this.fish2, this.fish2.speed);
         this.fishMovement(this.fish3, this.fish3.speed);
         this.fishMovement(this.pufferFish, this.pufferFish.speed);
+        this.fishMovement(this.bubble, 1);
     }
 
     //determines player movement and animation
@@ -139,10 +160,12 @@ class playScene extends Phaser.Scene{
         }
     }
 
+
     
     //fish movement
     fishMovement(fish, speed)
     {
+        
         fish.y += speed;
         if(fish.y > config.height)
         {
