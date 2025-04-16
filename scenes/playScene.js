@@ -22,6 +22,7 @@ class playScene extends Phaser.Scene{
         this.gameOver = false; //game over variable
 
         
+
         //loads the background
         this.background = this.add.sprite(0, 0, "background").setOrigin(0, 0).setDisplaySize(config.width, config.height); 
 
@@ -37,6 +38,16 @@ class playScene extends Phaser.Scene{
 
         this.fish3 = this.add.image(Phaser.Math.Between(0, config.width), 0, "fish3");
         this.fish3.setScale(0.10);
+
+        //Pufferfish acts as an enemy to the player and causes damage
+        this.pufferFish = this.add.image(Phaser.Math.Between(0, config.width), 0, "pufferFish");
+        this.pufferFish.setScale(0.10);
+
+        //creates enemy group
+        this.enemies = this.physics.add.group();
+        this.enemies.add(this.pufferFish);
+
+        this.pufferFish.setInteractive();
 
 
         //loads the player/ character sprite
@@ -132,4 +143,55 @@ class playScene extends Phaser.Scene{
         var randomX = Phaser.Math.Between(0, config.width);
         fish.x = randomX;
     }
+
+    //function to handle when the player collides with an enemy
+    //takes player and enemy as parameters
+    hurtPlayer(player, enemy) {
+
+        this.resetFish(enemy); //reset the enemy position
+        this.health -= 1; //subtracts 1 from health
+
+        //don't hurt the player if it is invincible
+        if(this.player.alpha < 1){
+        return;
+        }
+    
+        //disable the player and hide it
+        player.disableBody(true, true);
+
+        //after a time enable the player again
+        this.time.addEvent({
+        delay: 1000,
+        callback: this.resetPlayer,
+        callbackScope: this,
+        loop: false
+        });
+    }
+
+    //function to handle reseting the player
+    resetplayer(){
+    //enable the player again
+    var x = config.width / 2 - 8;
+    var y = config.height + 64;
+    this.player.enableBody(true, x, y, true, true);
+
+    //make the player transparent to indicate invulnerability
+    this.player.alpha = 0.5;
+
+    //move the player back to its original position
+        var tween = this.tweens.add({
+            targets: this.player,
+            y: config.height - 64,
+            ease: 'Power1',
+            duration: 1500,
+            repeat:0,
+            onComplete: function(){
+            this.player.alpha = 1; //set the player alpha back to 1
+            },
+            callbackScope: this
+        });
+    }
+
+
+
 }
