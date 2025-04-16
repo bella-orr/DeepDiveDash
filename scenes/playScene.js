@@ -116,6 +116,14 @@ class playScene extends Phaser.Scene{
 
         this.physics.add.collider(this.player, this.fishGroup, this.collectFish, null, this); //collect fish
 
+        //timer that decreses oxygen overtime
+        this.time.addEvent({
+            delay: 1000, 
+            callback: this.decreaseOxygen,
+            callbackScope: this,
+            loop: true
+        });
+
         //allows for player movement
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -173,6 +181,17 @@ class playScene extends Phaser.Scene{
         }
     }
 
+    //decreases oxygen over time
+    decreaseOxygen()
+    {
+        this.oxygen -= 2; 
+        console.log("Oxygen: " + this.oxygen); //display oxygen in console but will be removed for final
+        if(this.oxygen <= 0)
+        {
+            this.gameOver = true; //set game over to true
+            console.log("game over") //restart the game
+        }
+    }
 
     
     //fish movement
