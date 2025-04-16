@@ -26,22 +26,30 @@ class playScene extends Phaser.Scene{
         //loads the background
         this.background = this.add.sprite(0, 0, "background").setOrigin(0, 0).setDisplaySize(config.width, config.height); 
 
+        //creates the fish group
+        this.fishGroup = this.physics.add.group(); 
+
         //loads the falling objects
 
-        this.fish1 = this.add.image(Phaser.Math.Between(0, config.width), 0, "fish1");
+        this.fish1 = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "fish1");
         this.fish1.setScale(0.10);
-        this.fish1.speed = Phaser.Math.Between(1, 3); 
+        this.fish1.speed = Phaser.Math.Between(1, 3);
+        this.fishGroup.add(this.fish1);
 
-        this.fish2 = this.add.image(Phaser.Math.Between(0, config.width), 0, "fish2");
+        this.fish2 = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "fish2");
         this.fish2.setScale(0.10);
-        this.fish2.speed = Phaser.Math.Between(1, 3); 
+        this.fish2.speed = Phaser.Math.Between(1, 3);
+        this.fishGroup.add(this.fish2);
 
-        this.fish3 = this.add.image(Phaser.Math.Between(0, config.width), 0, "fish3");
+        this.fish3 = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "fish3");
         this.fish3.setScale(0.10);
         this.fish3.speed = Phaser.Math.Between(1, 3); 
+        this.fishGroup.add(this.fish3);
+        
+
 
         //loads the bubble object for oxygen
-        this.bubble = this.add.sprite(Phaser.Math.Between(0, config.width), 0, "bubble");
+        this.bubble = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "bubble");
         this.bubble.setScale(0.08);
         this.bubble.anims.play('bubble', true); 
 
@@ -54,26 +62,29 @@ class playScene extends Phaser.Scene{
         });
 
         //Pufferfish acts as an enemy to the player and causes damage
-        this.pufferFish = this.add.image(Phaser.Math.Between(0, config.width), 0, "pufferFish");
+        this.pufferFish = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "pufferFish");
         this.pufferFish.setScale(0.10);
         this.pufferFish.speed = Phaser.Math.Between(1, 3); 
+        
 
-        this.deadFish = this.add.image(Phaser.Math.Between(0, config.width), 0, "deadFish"); 
+        this.deadFish = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "deadFish"); 
         this.deadFish.setScale(0.70); 
         this.deadFish.speed = Phaser.Math.Between(1, 3); 
+        
 
         //creates enemy group
         this.enemies = this.physics.add.group();
         this.enemies.add(this.pufferFish);
         this.enemies.add(this.deadFish);
 
+       
         //sets the objects to be interactive
-        this.deadFish.setInteractive();
-        this.fish1.setInteractive();
-        this.fish2.setInteractive();
-        this.fish3.setInteractive();
-        this.pufferFish.setInteractive();
-        this.bubble.setInteractive();
+        //this.deadFish.setInteractive();
+        //this.fish1.setInteractive();
+        //this.fish2.setInteractive();
+        //this.fish3.setInteractive();
+        //this.pufferFish.setInteractive();
+        //this.bubble.setInteractive();
 
 
         //loads the player/ character sprite
@@ -102,6 +113,8 @@ class playScene extends Phaser.Scene{
             frameRate: 20,
             repeat: -1
         });
+
+        this.physics.add.collider(this.player, this.fishGroup, this.collectFish, null, this); //collect fish
 
         //allows for player movement
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -179,6 +192,8 @@ class playScene extends Phaser.Scene{
         fish.y = 0;
         fish.x = Phaser.Math.Between(0, config.width);
         fish.speed = Phaser.Math.Between(1, 3); 
+        fish.setVelocityX(0); 
+        fish.allowGravity = false; 
     }
     
 
@@ -206,6 +221,26 @@ class playScene extends Phaser.Scene{
         });
     }
 
+    //function to handle collecting fish
+    collectFish(player, fish) 
+    {
+        if (fish === this.fish1)
+            {
+                this.score += 3; 
+            }
+        else if (fish === this.fish2)
+            {
+                this.score += 2; 
+            }
+        else if (fish === this.fish3)
+            {
+                this.score += 1; 
+            }
+
+        this.resetFish(fish); 
+        
+        console.log("Score: " + this.score); //display score in console but will be removed for final
+    }
     //function to handle reseting the player
     resetplayer(){
     //enable the player again
