@@ -192,6 +192,15 @@ class playScene extends Phaser.Scene{
             });
         }
 
+        //if the player runs out of oxygen completely, the health will go down faster until the player dies or their oxygen is restored
+        
+        if (this.oxygen <= 0) 
+        {
+            this.health -= 3; //decrease health faster
+            console.log("Health: " + this.health); //display health in console but will be removed for final
+
+        }
+
         //checks if the player is dead and if so, goes to game over screen
         if (this.health <= 0) {
             this.scene.start("gameOver", { 
@@ -287,16 +296,18 @@ class playScene extends Phaser.Scene{
     //takes player and enemy as parameters
     hurtPlayer(player, enemy) {
 
+        //don't hurt the player if it is invincible
+        if(this.player.alpha < 1){
+            return;
+            }
+            
         this.resetFish(enemy); //reset the enemy position
         this.health -= 1; //subtracts 1 from health
 
         //output for testing
         console.log("Health: " + this.health); //display health in console but will be removed for final
 
-        //don't hurt the player if it is invincible
-        if(this.player.alpha < 1){
-        return;
-        }
+        
     
         //disable the player and hide it
         player.disableBody(true, true);
