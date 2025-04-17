@@ -21,7 +21,7 @@ class playScene extends Phaser.Scene{
         this.oxygen = 100; //oxygen variable
         this.gameOver = false; //game over variable
 
-        
+
 
         //loads the background
         this.background = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0, 0); 
@@ -162,7 +162,9 @@ class playScene extends Phaser.Scene{
         //allows for player movement
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        
+        //creates key object for 'o' key
+        //used for debugging. can be commented out later
+        this.skipKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
         
     }
 
@@ -179,6 +181,16 @@ class playScene extends Phaser.Scene{
         this.fishMovement(this.bubble, 1);
 
         this.background.tilePositionX -= 0.5; 
+
+        //debugging tool to see game Over screne can be commented out later
+        //allows us to see the game over screen by pressing 'o'
+        if (Phaser.Input.Keyboard.JustDown(this.skipKey)) {
+            this.scene.start("gameOver", { 
+                score: this.score,
+                health: this.health,
+                oxygen: this.oxygen
+            });
+        }
     }
 
     //determines player movement and animation
