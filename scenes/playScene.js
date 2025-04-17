@@ -21,8 +21,6 @@ class playScene extends Phaser.Scene{
         this.oxygen = 100; //oxygen variable
         this.gameOver = false; //game over variable
 
-
-
         //loads the background
         this.background = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0, 0); 
 
