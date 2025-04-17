@@ -324,18 +324,20 @@ class playScene extends Phaser.Scene{
     //function to handle collecting fish
     collectFish(player, fish) 
     {
-        if (fish === this.fish1)
-            {
-                this.score += 3; 
-            }
-        else if (fish === this.fish2)
-            {
-                this.score += 2; 
-            }
-        else if (fish === this.fish3)
+        if (fish.speed === 1)
             {
                 this.score += 1; 
             }
+        else if (fish.speed > 1 && fish.speed <= 4)
+            {
+                this.score += 2; 
+            }
+        else if (fish.speed > 4)
+            {
+                this.score += 3; 
+            }
+
+        
 
         this.resetFish(fish); 
        
