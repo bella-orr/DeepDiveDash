@@ -183,8 +183,17 @@ class playScene extends Phaser.Scene{
         this.background.tilePositionX -= 0.5; 
 
         //debugging tool to see game Over screne can be commented out later
-        //allows us to see the game over screen by pressing 'o'
+        //allows us to see the game over screen by pressing 'o' for testing
         if (Phaser.Input.Keyboard.JustDown(this.skipKey)) {
+            this.scene.start("gameOver", { 
+                score: this.score,
+                health: this.health,
+                oxygen: this.oxygen
+            });
+        }
+
+        //checks if the player is dead and if so, goes to game over screen
+        if (this.health <= 0) {
             this.scene.start("gameOver", { 
                 score: this.score,
                 health: this.health,
