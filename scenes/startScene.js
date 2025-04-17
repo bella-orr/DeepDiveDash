@@ -14,6 +14,8 @@ class startScene extends Phaser.Scene {
   // preload function is called before the scene is created
   preload(){
   //load images here
+  this.load.image("big-character", "assets/images/home-character.png")
+
   this.load.image("deadFish", "assets/images/dead_fish.png");
   this.load.image("fish1", "assets/images/fish-1.png");
   this.load.image("fish2", "assets/images/fish-2.png");
@@ -62,6 +64,12 @@ class startScene extends Phaser.Scene {
   // create function is called after the preload function
   // this function will create the game objects and start the game
   create() {
+    //background
+    this.background = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0, 0);
+    
+    //buttons
+    
+
     //Loading game
     this.add.text(20, 20, "Loading game...");
 
