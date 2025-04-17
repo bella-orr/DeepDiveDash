@@ -18,15 +18,14 @@ var config = {
   width: 800,
   height: 600,
   backgroundColor: '#000000',
-  scene: [ startScene, playScene, gameOverScene ],
+  scene: [startScene, playScene, gameOverScene],
   pixelArt: true,
   physics: {
     default: "arcade",
-    arcade:{
+    arcade: {
       debug: false
     }
   }
-}
+};
 
-//Create a new Phaser game instance using config variable
 var game = new Phaser.Game(config);
