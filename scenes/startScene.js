@@ -96,26 +96,75 @@ class startScene extends Phaser.Scene {
     const buttonBackground = this.add.graphics();
     buttonBackground.fillStyle(0x92a6f0, 1); // Set color and opacity
     buttonBackground.fillRoundedRect(
-      config.width / 2 , // x position
-      config.height / 2 , // y position
-      300, // width
+      config.width / 2 - 175, // x position
+      config.height / 2 - 155, // y position
+      350, // width
       60, // height
       20 // corner radius
     );
 
     const startButton = this.add
-      .text(config.width / 2, config.height / 2, "Start Game", {
-        font: "64px arcadeFont",
-        fill: "#000000",
-      })
+      .bitmapText(
+        config.width / 2,
+        config.height / 2 - 125,
+        "arcadeFont",
+        "Start Game",
+        24
+      )
       .setOrigin(0.5)
       .setInteractive();
 
     startButton.on("pointerdown", () => {
-      this.time.delayedCall(2000, () => {
-        this.scene.start("playGame");
-      });
+      this.scene.start("playGame");
     });
+
+    let buttonBackground2 = buttonBackground; // Clone the button background
+    buttonBackground2.fillStyle(0x92a6f0, 1);
+    buttonBackground2.fillRoundedRect(
+      config.width / 2 - 165,
+      config.height / 2 - 55,
+      325,
+      60,
+      20
+    );
+
+    const resumeButton = this.add
+      .bitmapText(
+        config.width / 2,
+        config.height / 2 - 25,
+        "arcadeFont",
+        "Resume Game",
+        24
+      )
+      .setOrigin(0.5)
+      .setInteractive();
+
+    // resumeButton.on("pointerdown", () => {});
+    // add resume gameplay here
+
+    let buttonBackground3 = buttonBackground; // Clone the button background
+    buttonBackground3.fillStyle(0x92a6f0, 1);
+    buttonBackground3.fillRoundedRect(
+      config.width / 2 - 130,
+      config.height / 2 + 45,
+      255,
+      60,
+      20
+    );
+
+    const exitButton = this.add
+      .bitmapText(
+        config.width / 2,
+        config.height / 2 + 75,
+        "arcadeFont",
+        "Exit Game",
+        24
+      )
+      .setOrigin(0.5)
+      .setInteractive();
+
+    // exitButton.on("pointerdown", () => {});
+    // add exit logic here
 
     //animations here
   }
