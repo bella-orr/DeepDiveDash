@@ -1,5 +1,6 @@
 // Assignment: Deep Dive Dash Final Project
-// Contributors:  Addison Hatfield (Lead Game Developer), Bella Orr (Game Developer/ Tester), Nicole Miller (Lead Game Designer), Peter Nguyen
+// Contributors:  Addison Hatfield (Lead Game Developer), Bella Orr (Game Developer/ Tester), 
+// Nicole Miller (Lead Game Designer), Peter Nguyen (Game Designer/ Documentation/ Support Deverloper)
 // Course: IT3049C
 // Professor: Professor Andrew Lively
 // Due Date: 4/30/2025
@@ -165,6 +166,52 @@ class startScene extends Phaser.Scene {
 
     // exitButton.on("pointerdown", () => {});
     // add exit logic here
+    
+    //character and other decors
+    let homeCharacter = this.add.image(
+      config.width / 2 - 240,
+      config.height / 2 + 50,
+      "big-character" 
+    ).setOrigin(0.5, 0.5);
+    homeCharacter.setScale(0.3); 
+
+    let fish1 = this.add.image(
+      config.width / 2 + 250,
+      config.height / 2 - 100,
+      "fish1"
+    ).setOrigin(0.5, 0.5);
+    fish1.setScale(0.3);
+    fish1.flipX = true;
+    fish1.angle = -28.65; 
+
+    let fish3 = this.add.image(
+      config.width / 2 - 250,
+      config.height / 2 - 150,
+      "fish3"
+    ).setOrigin(0.5, 0.5);
+    fish3.setScale(0.3);
+    fish3.angle = 28.65; 
+
+    //more background decor (reuse gameScene decor)
+    let purpleCoral1 = this.add.image(120, config.height - 60, "purpleCoral").setOrigin(0.5, 1).setScale(1);
+    let purpleCoral2 = this.add.image(config.width - 90, config.height - 60, "purpleCoral").setOrigin(0.5, 1).setScale(1.5);
+    let orangeStar1 = this.add.image(555, config.height - 60, "orangeStar").setOrigin(0.5, 1).setScale(0.8);
+    let blueCoral = this.add.image(20, config.height - 60, "blueCoral").setOrigin(0.5, 1).setScale(1.25);
+    let smallGCoral = this.add.image(30, config.height - 60, "smallGCoral").setOrigin(0.5, 1).setScale(0.5);
+    let rock2 = this.add.image(config.width - 3, config.height - 60, "rock2").setOrigin(0.5, 1).setScale(1.8);
+   
+    let toggle = true; 
+        let sandWidth = 64;
+        let yPosition = config.height -64;
+
+
+        //alternates between sand 1 and 2
+        for(let i = 0; i < config.width; i += sandWidth)
+            {
+                let key = toggle ? "sand1" : "sand2";
+                this.add.image(i, yPosition, key).setOrigin(0, 0).setScale(1); // Adjust scale if needed
+                toggle = !toggle;
+            }
 
     //animations here
   }

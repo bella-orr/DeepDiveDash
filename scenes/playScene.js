@@ -1,5 +1,5 @@
 // Assignment: Deep Dive Dash Final Project
-// Contributors:  Addison Hatfield (Lead Game Developer), Bella Orr (Game Developer/ Tester), Nicole Miller (Lead Game Designer), Peter Nguyen 
+// Contributors:  Addison Hatfield (Lead Game Developer), Bella Orr (Game Developer/ Tester), Nicole Miller (Lead Game Designer), Peter Nguyen (Game Designer/ Documentation/ Deverloper) 
 // Course: IT3049C
 // Professor: Professor Andrew Lively
 // Due Date: 4/30/2025
@@ -55,8 +55,6 @@ class playScene extends Phaser.Scene{
         this.fishGroup.add(this.fish3);
         
 
-
-        
 
         //Pufferfish acts as an enemy to the player and causes damage
         this.pufferFish = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "pufferFish");
