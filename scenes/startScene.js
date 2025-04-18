@@ -89,9 +89,7 @@ class startScene extends Phaser.Scene {
   // this function will create the game objects and start the game
   create() {
     //background
-    this.background = this.add
-      .tileSprite(0, 0, config.width, config.height, "background")
-      .setOrigin(0, 0);
+    this.background = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0, 0);
 
     //buttons
     const buttonBackground = this.add.graphics();
@@ -214,5 +212,9 @@ class startScene extends Phaser.Scene {
             }
 
     //animations here
+  }
+
+  update(){
+    this.background.tilePositionX += 0.5; 
   }
 }
