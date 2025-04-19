@@ -20,6 +20,8 @@ class playScene extends Phaser.Scene{
         this.health = 5; //health variable
         this.oxygen = 100; //oxygen variable
         this.gameOver = false; //game over variable
+        this.healthDrainTimer = null;
+        this.isDrainingHealth = false;
 
         //loads the background
         this.background = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0, 0); 
@@ -33,12 +35,27 @@ class playScene extends Phaser.Scene{
         this.scoreLabel = this.add.bitmapText(config.width - 205, 20, "arcadeFont", "", 12);
         this.scoreLabel.setOrigin(0, 0); 
         
-        
+        //Create the health and oxygen bars
+        this.healthBarBG = this.add.graphics();
+        this.healthBarBG.fillStyle(0x222222, 0.6);
+        this.healthBarBG.fillRoundedRect(20, 20, 120, 15, 5);
+        this.healthBar = this.add.graphics();
+
+        this.oxygenBarBG = this.add.graphics();
+        this.oxygenBarBG.fillStyle(0x222222, 0.6);
+        this.oxygenBarBG.fillRoundedRect(20, 45, 120, 15, 5);
+        this.oxygenBar = this.add.graphics();
+
+        this.add.bitmapText(15, 15, "arcadeFont", "Health", 12).setTint(0xffffff);
+        this.add.bitmapText(15, 40, "arcadeFont", "Oxygen", 12).setTint(0xffffff);
+       
+        this.updateBars();
+
+
         //creates the fish group
         this.fishGroup = this.physics.add.group(); 
 
         //loads the falling objects
-
         this.fish1 = this.physics.add.sprite(Phaser.Math.Between(0, config.width), 0, "fish1");
         this.fish1.setScale(0.10);
         this.fish1.speed = Phaser.Math.Between(1, 5);
@@ -72,14 +89,6 @@ class playScene extends Phaser.Scene{
         this.enemies.add(this.pufferFish);
         this.enemies.add(this.deadFish);
 
-       
-        //sets the objects to be interactive
-        //this.deadFish.setInteractive();
-        //this.fish1.setInteractive();
-        //this.fish2.setInteractive();
-        //this.fish3.setInteractive();
-        //this.pufferFish.setInteractive();
-        //this.bubble.setInteractive();
 
         //loads decorations behind player
         let purpleCoral1 = this.add.image(120, config.height - 60, "purpleCoral").setOrigin(0.5, 1).setScale(1);
@@ -168,7 +177,6 @@ class playScene extends Phaser.Scene{
     {
         this.movePlayer();
 
-        //may want to create a method that assigns random speed to the fish
         this.fishMovement(this.deadFish, this.deadFish.speed);
         this.fishMovement(this.fish1, this.fish1.speed);
         this.fishMovement(this.fish2, this.fish2.speed);
@@ -188,23 +196,6 @@ class playScene extends Phaser.Scene{
             });
         }
 
-        //if the player runs out of oxygen completely, the health will go down faster until the player dies or their oxygen is restored
-        
-        if (this.oxygen <= 0) 
-        {
-            this.health -= 3; //decrease health faster
-            console.log("Health: " + this.health); //display health in console but will be removed for final
-
-        }
-
-        //checks if the player is dead and if so, goes to game over screen
-        if (this.health <= 0) {
-            this.scene.start("gameOver", { 
-                score: this.score,
-                health: this.health,
-                oxygen: this.oxygen
-            });
-        }
     }
 
     //determines player movement and animation
@@ -244,80 +235,27 @@ class playScene extends Phaser.Scene{
         }
     }
 
-    //decreases oxygen over time
-    decreaseOxygen()
-    {
-        this.oxygen -= 2; 
-        console.log("Oxygen: " + this.oxygen); //display oxygen in console but will be removed for final
-        if(this.oxygen <= 0)
-        {
-            //set game over to true
-            //this.gameOver = true;
-            console.log("game over") //restart the game
-        }
-    }
 
-    //collects bubble
-    collectBubble(player, bubble)
-    {
-        this.oxygen += 4;
-        console.log("Oxygen: " + this.oxygen); //display oxygen in console but will be removed for final
-        this.resetFish(bubble); //reset the bubble position
-    }
-
-    
-    //fish movement
-    fishMovement(fish, speed)
-    {
-        
-        fish.y += speed;
-        if(fish.y > config.height)
-        {
-            this.resetFish(fish);
-        }
-    }
-
-    //resets the fish to the top of the screen at a random x position
-    resetFish(fish)
-    {
-        fish.y = 0;
-        fish.x = Phaser.Math.Between(0, config.width);
-        fish.speed = Phaser.Math.Between(1, 5); 
-        fish.setVelocityX(0); 
-        fish.allowGravity = false; 
-    }
-    
-
-    //function to handle when the player collides with an enemy
-    //takes player and enemy as parameters
-    hurtPlayer(player, enemy) {
-
-        //don't hurt the player if it is invincible
-        if(this.player.alpha < 1){
-            return;
-            }
-            
-        this.resetFish(enemy); //reset the enemy position
-        this.health -= 1; //subtracts 1 from health
-
-        //output for testing
-        console.log("Health: " + this.health); //display health in console but will be removed for final
-
-        
-    
-        //disable the player and hide it
-        player.disableBody(true, true);
-
-        //after a time enable the player again
-        this.time.addEvent({
-        delay: 1000,
-        callback: this.resetPlayer,
-        callbackScope: this,
-        loop: false
-        });
-    }
-
-  
+     //fish movement
+     fishMovement(fish, speed)
+     {
+         
+         fish.y += speed;
+         if(fish.y > config.height)
+         {
+             this.resetFish(fish);
+         }
+     }
+ 
+     //resets the fish to the top of the screen at a random x position
+     resetFish(fish)
+     {
+         fish.y = 0;
+         fish.x = Phaser.Math.Between(0, config.width);
+         fish.speed = Phaser.Math.Between(1, 5); 
+         fish.setVelocityX(0); 
+         fish.allowGravity = false; 
+     }
 
     //function to handle collecting fish
     collectFish(player, fish) 
@@ -340,20 +278,49 @@ class playScene extends Phaser.Scene{
         this.resetFish(fish); 
        
         //updates the score label
-    var scoreFormatted = this.zeroPad(this.score, 6); 
-       this.scoreLabel.text = "SCORE: " +  scoreFormatted;
+        var scoreFormatted = this.zeroPad(this.score, 6); 
+        this.scoreLabel.text = "SCORE: " +  scoreFormatted;
     }
 
-    //zero pad
-    zeroPad(number, size) {
-        var stringNumber = String(number);
-        while (stringNumber.length < (size || 2)) {
-            stringNumber = "0" + stringNumber;
+    //collects bubble
+    collectBubble(player, bubble)
+    {
+        this.oxygen += 6;
+        if (this.oxygen > 100)
+        {
+            this.oxygen = 100; 
         }
-        return stringNumber;
+        this.resetFish(bubble); 
+        this.updateBars(); 
     }
 
-    //function to handle reseting the player
+    //function to handle when the player collides with an enemy
+    //takes player and enemy as parameters
+    hurtPlayer(player, enemy) {
+
+        //don't hurt the player if it is invincible
+        if(this.player.alpha < 1){
+            return;
+            }
+            
+        this.resetFish(enemy); 
+        this.health -= 1; 
+
+        this.updateBars(); 
+    
+        //disable the player and hide it
+        player.disableBody(true, true);
+
+        //after a time enable the player again
+        this.time.addEvent({
+        delay: 1000,
+        callback: this.resetPlayer,
+        callbackScope: this,
+        loop: false
+        });
+    }
+
+        //function to handle reseting the player
     resetPlayer(){
     //enable the player again
     var x = config.width / 2 - 8;
@@ -376,6 +343,89 @@ class playScene extends Phaser.Scene{
             callbackScope: this
         });
     }
+
+    //decreases oxygen over time
+    decreaseOxygen()
+    {
+        this.oxygen -= 2; 
+        
+        //prevents oxygen from becoming negative int
+        if(this.oxygen < 0)
+        {
+            this.oxygen = 0;
+        }
+
+        this.updateBars();
+
+        if (this.oxygen <= 0 && !this.isDrainingHealth) 
+        {
+            this.startHealthDrain();
+        } 
+        
+        else if (this.oxygen > 0 && this.isDrainingHealth) 
+        {
+            this.stopHealthDrain();
+        }
+    }
+
+    //starts draining health when oxygen is 0
+    startHealthDrain() {
+        this.isDrainingHealth = true;
+        this.healthDrainTimer = this.time.addEvent({
+            delay: 1000,
+            callback: () => {
+                this.health -= 0.2; 
+                this.updateBars(); 
+
+                if (this.health <= 0) 
+                {
+                    this.scene.start("gameOver", {
+                        score: this.score,
+                        health: this.health,
+                        oxygen: this.oxygen
+                    });
+                }
+            },
+            loop: true
+           
+        });
+    }
+
+    //stops draining health when oxygen is above 0
+    stopHealthDrain() {
+        this.isDrainingHealth = false;
+        if (this.healthDrainTimer) {
+            this.healthDrainTimer.remove(false);
+            this.healthDrainTimer = null;
+        }
+    }
+
+    //updates the health and oxygen bars
+    updateBars(){
+
+        //health bar
+        this.healthBar.clear();
+        let healthWidth = (this.health / 5) * 120;
+        this.healthBar.fillStyle(0xff0000, 1);
+        this.healthBar.fillRoundedRect(20, 20, healthWidth, 15, 5);
+
+        //oxygen bar
+        this.oxygenBar.clear();
+        let oxygenWidth = (this.oxygen / 100) * 120;
+        this.oxygenBar.fillStyle(0x00bfff, 1);
+        this.oxygenBar.fillRoundedRect(20, 45, oxygenWidth, 15, 5);
+    }
+
+    //zero pad
+    zeroPad(number, size) {
+        var stringNumber = String(number);
+        while (stringNumber.length < (size || 2)) {
+            stringNumber = "0" + stringNumber;
+        }
+        return stringNumber;
+    }
+
+
 
 
 
