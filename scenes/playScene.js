@@ -158,7 +158,7 @@ class playScene extends Phaser.Scene{
 
         //timer that decreses oxygen overtime
         this.time.addEvent({
-            delay: 4000, 
+            delay: 3000, 
             callback: this.decreaseOxygen,
             callbackScope: this,
             loop: true
@@ -308,6 +308,16 @@ class playScene extends Phaser.Scene{
         this.health -= 1; 
 
         this.updateBars(); 
+
+        //if the player is dead, go to game over screen
+        if(this.health <= 0)
+        {
+            this.scene.start("gameOver", {
+                score: this.score,
+                health: this.health,
+                oxygen: this.oxygen
+            });
+        }
     
         //disable the player and hide it
         player.disableBody(true, true);
@@ -348,7 +358,7 @@ class playScene extends Phaser.Scene{
     //decreases oxygen over time
     decreaseOxygen()
     {
-        this.oxygen -= 3; 
+        this.oxygen -= 2; 
         
         //prevents oxygen from becoming negative int
         if(this.oxygen < 0)
