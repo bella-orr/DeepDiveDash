@@ -158,7 +158,7 @@ class playScene extends Phaser.Scene{
 
         //timer that decreses oxygen overtime
         this.time.addEvent({
-            delay: 1000, 
+            delay: 4000, 
             callback: this.decreaseOxygen,
             callbackScope: this,
             loop: true
@@ -285,11 +285,12 @@ class playScene extends Phaser.Scene{
     //collects bubble
     collectBubble(player, bubble)
     {
-        this.oxygen += 10;
+        this.oxygen += 5;
         if (this.oxygen > 100)
         {
             this.oxygen = 100; 
         }
+
         this.resetFish(bubble); 
         this.updateBars(); 
     }
@@ -347,7 +348,7 @@ class playScene extends Phaser.Scene{
     //decreases oxygen over time
     decreaseOxygen()
     {
-        this.oxygen -= 2; 
+        this.oxygen -= 3; 
         
         //prevents oxygen from becoming negative int
         if(this.oxygen < 0)
