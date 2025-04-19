@@ -285,7 +285,7 @@ class playScene extends Phaser.Scene{
     //collects bubble
     collectBubble(player, bubble)
     {
-        this.oxygen += 6;
+        this.oxygen += 10;
         if (this.oxygen > 100)
         {
             this.oxygen = 100; 
