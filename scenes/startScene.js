@@ -81,9 +81,9 @@ class startScene extends Phaser.Scene {
       "oceanWaves",
       "assets/sounds/148283__rmutt__oceanwaves-5.wav"
     );
-    this.load.audio('hurtSound', 'assets/sounds/268698__swedger__game-bleeps-5.wav')
-
+    this.load.audio('hurtSound', 'assets/sounds/268698__swedger__game-bleeps-5.wav');
     this.load.audio("oceanNoise", "assets/sounds/oceanNoise.wav");
+    this.load.audio('startSound', 'assets/sounds/joyful-music-happy-fun-game-play-vlog-show-background-intro-theme-261860.mp3');
   }
 
   // create function is called after the preload function
@@ -91,6 +91,10 @@ class startScene extends Phaser.Scene {
   create() {
     //background
     this.background = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0, 0);
+
+    //background music
+    this.sound.add("startSound", { loop: true });
+    this.sound.play("startSound", { volume: 0.5 });
 
     //buttons
     const buttonBackground = this.add.graphics();
@@ -116,6 +120,7 @@ class startScene extends Phaser.Scene {
 
     startButton.on("pointerdown", () => {
       this.scene.start("playGame");
+      this.sound.stopAll(); // Stop the background music
     });
 
     let buttonBackground2 = buttonBackground; // Clone the button background

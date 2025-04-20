@@ -109,7 +109,7 @@ class playScene extends Phaser.Scene {
       "pufferFish"
     );
     this.pufferFish.setScale(0.1);
-    this.pufferFish.speed = Phaser.Math.Between(1, 5);
+    this.pufferFish.speed = Phaser.Math.Between(1, 3);
 
     this.deadFish = this.physics.add.sprite(
       Phaser.Math.Between(0, config.width),
@@ -117,7 +117,7 @@ class playScene extends Phaser.Scene {
       "deadFish"
     );
     this.deadFish.setScale(0.7);
-    this.deadFish.speed = Phaser.Math.Between(1, 5);
+    this.deadFish.speed = Phaser.Math.Between(1, 3);
 
     //creates enemy group
     this.enemies = this.physics.add.group();
@@ -361,7 +361,7 @@ class playScene extends Phaser.Scene {
 
     this.updateBars();
 
-    this.hurtSound.play(); //plays the hurt sound
+    this.hurtSound.play({volume: 0.5}); //plays the hurt sound
 
     //if the player is dead, go to game over screen
     if (this.health <= 0) {
@@ -410,7 +410,7 @@ class playScene extends Phaser.Scene {
 
   //decreases oxygen over time
   decreaseOxygen() {
-    this.oxygen -= 2;
+    this.oxygen -= 5;
 
     //prevents oxygen from becoming negative int
     if (this.oxygen < 0) {
