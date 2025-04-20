@@ -172,6 +172,15 @@ class startScene extends Phaser.Scene {
     fish3.setScale(0.3);
     fish3.angle = 28.65; 
 
+    let pufferFish = this.add.image(
+      config.width / 2 + 145,
+      config.height / 2 + 115,
+      "pufferFish"
+    ).setOrigin(0.5, 0.5);
+    pufferFish.flipX = true;
+    pufferFish.angle = 28.65;
+    pufferFish.setScale(0.2);
+
     //more background decor (reuse gameScene decor)
     let purpleCoral1 = this.add.image(120, config.height - 60, "purpleCoral").setOrigin(0.5, 1).setScale(1);
     let purpleCoral2 = this.add.image(config.width - 90, config.height - 60, "purpleCoral").setOrigin(0.5, 1).setScale(1.5);
