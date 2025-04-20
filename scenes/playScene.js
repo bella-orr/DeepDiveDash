@@ -13,6 +13,7 @@ class playScene extends Phaser.Scene {
   create() {
     //sets the audio settings
     this.backgroundSound = this.sound.add("oceanNoise");
+    this.hurtSound = this.sound.add("hurtSound");
 
     var soundConfig = {
       mute: false,
@@ -359,6 +360,8 @@ class playScene extends Phaser.Scene {
     this.health -= 1;
 
     this.updateBars();
+
+    this.hurtSound.play(); //plays the hurt sound
 
     //if the player is dead, go to game over screen
     if (this.health <= 0) {

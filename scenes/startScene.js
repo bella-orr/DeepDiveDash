@@ -81,6 +81,7 @@ class startScene extends Phaser.Scene {
       "oceanWaves",
       "assets/sounds/148283__rmutt__oceanwaves-5.wav"
     );
+    this.load.audio('hurtSound', 'assets/sounds/268698__swedger__game-bleeps-5.wav')
 
     this.load.audio("oceanNoise", "assets/sounds/oceanNoise.wav");
   }
