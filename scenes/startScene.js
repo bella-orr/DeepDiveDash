@@ -84,6 +84,7 @@ class startScene extends Phaser.Scene {
     this.load.audio('hurtSound', 'assets/sounds/268698__swedger__game-bleeps-5.wav');
     this.load.audio("oceanNoise", "assets/sounds/oceanNoise.wav");
     this.load.audio('startSound', 'assets/sounds/joyful-music-happy-fun-game-play-vlog-show-background-intro-theme-261860.mp3');
+    this.load.audio('collectingSound', 'assets/sounds/blip-131856.mp3')
   }
 
   // create function is called after the preload function

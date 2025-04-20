@@ -14,6 +14,7 @@ class playScene extends Phaser.Scene {
     //sets the audio settings
     this.backgroundSound = this.sound.add("oceanNoise");
     this.hurtSound = this.sound.add("hurtSound");
+    this.collectSound = this.sound.add("collectingSound");
 
     var soundConfig = {
       mute: false,
@@ -331,6 +332,7 @@ class playScene extends Phaser.Scene {
     }
 
     this.resetFish(fish);
+    this.collectSound.play(); //plays the collecting sound
 
     //updates the score label
     var scoreFormatted = this.zeroPad(this.score, 6);
@@ -343,7 +345,7 @@ class playScene extends Phaser.Scene {
     if (this.oxygen > 100) {
       this.oxygen = 100;
     }
-
+    this.collectSound.play(); //plays the collecting sound
     this.resetFish(bubble);
     this.updateBars();
   }
