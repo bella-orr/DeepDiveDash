@@ -120,33 +120,9 @@ class startScene extends Phaser.Scene {
     let buttonBackground2 = buttonBackground; // Clone the button background
     buttonBackground2.fillStyle(0x92a6f0, 1);
     buttonBackground2.fillRoundedRect(
-      config.width / 2 - 165,
+      config.width / 2 - 125,
       config.height / 2 - 55,
-      325,
-      60,
-      20
-    );
-
-    const resumeButton = this.add
-      .bitmapText(
-        config.width / 2,
-        config.height / 2 - 25,
-        "arcadeFont",
-        "Resume Game",
-        24
-      )
-      .setOrigin(0.5)
-      .setInteractive();
-
-    // resumeButton.on("pointerdown", () => {});
-    // add resume gameplay here
-
-    let buttonBackground3 = buttonBackground; // Clone the button background
-    buttonBackground3.fillStyle(0x92a6f0, 1);
-    buttonBackground3.fillRoundedRect(
-      config.width / 2 - 130,
-      config.height / 2 + 45,
-      255,
+      250,
       60,
       20
     );
@@ -154,7 +130,7 @@ class startScene extends Phaser.Scene {
     const exitButton = this.add
       .bitmapText(
         config.width / 2,
-        config.height / 2 + 75,
+        config.height / 2 - 25,
         "arcadeFont",
         "Exit Game",
         24
