@@ -164,6 +164,12 @@ class startScene extends Phaser.Scene {
 
     // exitButton.on("pointerdown", () => {});
     // add exit logic here
+    exitButton.on("pointerdown", () => {
+      const confirmExit = confirm("Are you sure you want to exit the game?");
+      if (confirmExit) {
+        window.close(); // Close the window
+      }
+    });
     
     //character and other decors
     let homeCharacter = this.add.image(
