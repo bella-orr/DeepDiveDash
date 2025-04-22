@@ -4,27 +4,18 @@
 // Professor: Professor Andrew Lively
 // Due Date: 4/30/2025
 
-/***IMPORTANT NOTE, Please read!***
- * The text field for the name input for some reason is not working 
- * and I am aware of it. The player is unable to actively type their name into the text field. It is currently a Work in Progress, but in 
- * the meantime, the rest of the scene functions as intended.
- * 
- * Also, incase you are wondering, the game does not have a scoreboard yet. I plan to implement a scoreboard that will save the scores from highest to lowest. Hence, why the text file is empty.
- * 
- * Press enter to delete the name input field and submit the score or click the submit button.
- * --Addison Hatfield 4/17/2025
- */
-
 class gameOverScene extends Phaser.Scene {
   constructor() {
     super({ key: "gameOver" });
   }
 
-
-  // stores the final score and player name
+  // Initialize the scene with data passed from the previous scene
   init(data) {
     this.finalScore = data.score || 0;
     this.playerName = "";
+    this.cursorVisible = true;
+    this.cursorBlinkDelay = 500;
+    this.lastCursorTime = 0;
   }
 
   create() {
@@ -34,16 +25,14 @@ class gameOverScene extends Phaser.Scene {
     // Add background
     this.background = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0, 0);
 
-    //Add decorations to the background
+    // Add decorations to the background
     let greenCoral3 = this.add.image(500, config.height, "bigCoral").setOrigin(0.5, 1).setScale(4.5);
     let purpleCoral3 = this.add.image(350, config.height, "purpleCoral").setOrigin(0.5, 1).setScale(3.0);
     let smallGCoral2 = this.add.image(200, config.height, "smallGCoral").setOrigin(0.5, 1).setScale(3.0);
     let purpleCoral4 = this.add.image(650, config.height, "purpleCoral").setOrigin(0.5, 1).setScale(2.5);    
     let orangeStar2 = this.add.image(550, config.height, "orangeStar").setOrigin(0.5, 1).setScale(1.5);
-
     let deadFish1 = this.add.image(250, config.height - 145, "deadFish").setOrigin(0.5, 1).setScale(1.5).setAngle(15);
     let deadFish2 = this.add.image(650, config.height - 425, "deadFish").setOrigin(0.5, 1).setScale(1.5).setAngle(135);
-
 
     // Add "Game Over" text
     this.gameOverText = this.add.bitmapText(
@@ -69,13 +58,13 @@ class gameOverScene extends Phaser.Scene {
     this.nameInputBG.fillRoundedRect(
       this.cameras.main.centerX - 150,
       this.scoreText.y + this.scoreText.height + 30,
-      300, //width of the input field
-      50,  //height of the input field
-      10  //rounded corners
+      300,
+      50,
+      10
     );
 
-    // Create name label
-    this.nameLabel = this.add.bitmapText(
+    // Create name prompt (will disappear when typing starts)
+    this.namePrompt = this.add.bitmapText(
       this.cameras.main.centerX - 140,
       this.scoreText.y + this.scoreText.height + 45,
       'arcadeFont',
@@ -83,32 +72,60 @@ class gameOverScene extends Phaser.Scene {
       24
     );
 
-    //input field using Phaser's DOM system
-    this.nameInput = this.add.dom(
-      this.cameras.main.centerX + 40,
-      this.scoreText.y + this.scoreText.height + 55
-    ).createElement('input', {
-      type: 'text',
-      style: 'width: 180px; height: 30px; font-size: 20px; text-align: center;',
-      maxLength: '10',
-      placeholder: 'Your name'
+    // Create name text display
+    this.nameDisplay = this.add.bitmapText(
+      this.cameras.main.centerX - 140,
+      this.scoreText.y + this.scoreText.height + 45,
+      'arcadeFont',
+      '',
+      24
+    );
+
+    // Create cursor
+    this.cursor = this.add.bitmapText(
+      this.nameDisplay.x + this.nameDisplay.width,
+      this.nameDisplay.y,
+      'arcadeFont',
+      '|',
+      24
+    );
+
+    // Set up keyboard input
+    this.input.keyboard.on('keydown', (event) => {
+      // Hide prompt when first character is typed
+      if (this.playerName.length === 0 && event.key.length === 1) {
+        this.namePrompt.setVisible(false);
+      }
+
+      if (event.key === 'Backspace') {
+        this.playerName = this.playerName.slice(0, -1);
+        // Show prompt again if all text is deleted
+        if (this.playerName.length === 0) {
+          this.namePrompt.setVisible(true);
+        }
+        this.updateNameDisplay();
+      } 
+      else if (event.key === 'Enter') {
+        this.submitName();
+      }
+      else if (event.key.length === 1 && this.playerName.length < 10) {
+        this.playerName += event.key;
+        this.updateNameDisplay();
+      }
     });
 
-    // Focus the input field immediately
-    this.nameInput.node.focus();
-
-    //submit button background
+    // Submit button background
     this.submitBG = this.add.graphics();
     this.submitBG.fillStyle(0xb18bdc, 0.8);
     this.submitBG.fillRoundedRect(
       this.cameras.main.centerX - 100,
       this.scoreText.y + this.scoreText.height + 90,
-      200, //width of the button
-      50, //height of the button
-      10 //rounded corners
+      200,
+      50,
+      10
     );
 
-    //submit button
+    // Submit button
     this.submitButton = this.add.bitmapText(
       this.cameras.main.centerX,
       this.scoreText.y + this.scoreText.height + 115,
@@ -121,63 +138,45 @@ class gameOverScene extends Phaser.Scene {
     this.submitButton.on('pointerover', () => this.submitButton.setTint(0x00ff00));
     this.submitButton.on('pointerout', () => this.submitButton.clearTint());
     this.submitButton.on('pointerdown', () => this.submitName());
-
-    // Also allow Enter key to submit
-    this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
   }
 
-  update() {
-
-    // Check if the Enter key is pressed
-    // If so, call the submitName function
-    if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
-      this.submitName();
+  // Function to update the scene
+  update(time) {
+    // Blink cursor effect
+    if (time > this.lastCursorTime + this.cursorBlinkDelay) {
+      this.cursorVisible = !this.cursorVisible;
+      this.cursor.setAlpha(this.cursorVisible ? 1 : 0);
+      this.lastCursorTime = time;
     }
+  }
+
+  // Function to update the name display and cursor position
+  updateNameDisplay() {
+    this.nameDisplay.setText(this.playerName);
+    // Update cursor position
+    this.cursor.x = this.nameDisplay.x + this.nameDisplay.width;
   }
 
   // Function to handle name submission
   submitName() {
-    // Get the input value
-    this.playerName = this.nameInput.node.value.trim() || "Player";
+    if (this.playerName === "") {
+      this.playerName = "Player";
+      this.namePrompt.setVisible(true); // Show prompt again if empty
+    }
     
-    // Save to localStorage
-    this.saveScore();
-    
-    // Transition to showing the restart button
-    this.showFinalScreen();
-  }
-
-  // Function to save the score to localStorage. 
-  // ****Plans to change to save to txt file for scoreboard****
-  saveScore() {
-    const scoreData = {
-      name: this.playerName,
-      score: this.finalScore,
-      date: new Date().toLocaleString()
-    };
-    
-    // Get existing scores or initialize array
-    const scores = JSON.parse(localStorage.getItem('highScores') || '[]');
-    scores.push(scoreData);
-    
-    // Sort by score (descending) and keep top 10
-    scores.sort((a, b) => b.score - a.score);
-    const topScores = scores.slice(0, 10);
-    
-    // Save back to localStorage
-    localStorage.setItem('highScores', JSON.stringify(topScores));
-  }
-
-  // Function to show the final screen with confirmation message and restart button
-  showFinalScreen() {
-    // Remove input elements
-    this.nameInput.destroy();
+    // Clean up input elements
+    this.input.keyboard.off('keydown');
     this.nameInputBG.destroy();
-    this.nameLabel.destroy();
+    this.namePrompt.destroy();
+    this.nameDisplay.destroy();
+    this.cursor.destroy();
     this.submitBG.destroy();
     this.submitButton.destroy();
 
-    // Show confirmation message
+    // Save score
+    this.saveScore();
+    
+    // Show confirmation
     this.add.bitmapText(
       this.cameras.main.centerX,
       this.scoreText.y + this.scoreText.height + 50,
@@ -190,9 +189,76 @@ class gameOverScene extends Phaser.Scene {
     this.createRestartButton(this.scoreText.y + this.scoreText.height + 100);
   }
 
+  // Function to save the score
+  saveScore() {
+    const scoreData = {
+        name: this.playerName,
+        score: this.finalScore,
+        date: new Date().toLocaleString()
+    };
+
+    //Get existing scores from localStorage as fallback
+    const scores = JSON.parse(localStorage.getItem('highScores') || '[]');
+    scores.push(scoreData);
+    
+    //Sort by score (descending)
+    scores.sort((a, b) => b.score - a.score);
+    const topScores = scores.slice(0, 10); // Keep top 10 scores
+    
+    //Save back to localStorage as backup
+    localStorage.setItem('highScores', JSON.stringify(topScores));
+    
+    //Format for text file
+    const textContent = topScores.map(score => 
+        `${score.name}: ${score.score} (${score.date})`
+    ).join('\n');
+    
+    // 5. Create downloadable file
+    this.downloadScoreboard(textContent);
+}
+
+//helper function to create downloadable file
+downloadScoreboard(content) {
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'scoreBoard.txt';
+    document.body.appendChild(a);
+    a.click();
+    
+    // Cleanup
+    setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }, 100);
+}
+
+//using fetch() to send to a server. Uncomment if you have a server to send data to.
+//Github only hosts static files.
+/*
+async saveScoreToServer() {
+  try {
+      const response = await fetch('your-server-endpoint', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+              name: this.playerName,
+              score: this.finalScore
+          })
+      });
+      const data = await response.json();
+      console.log('Score saved to server:', data);
+  } catch (error) {
+      console.error('Error saving score:', error);
+  }
+}
+*/
+
+
   // Function to create the restart button
   createRestartButton(yPosition) {
-    // Rectangle behind the restart button text
     this.restartBG = this.add.graphics();
     this.restartBG.fillStyle(0xb18bdc, 0.8); 
     this.restartBG.fillRoundedRect(
@@ -203,7 +269,7 @@ class gameOverScene extends Phaser.Scene {
       10
     );
 
-    // Create restart button
+    // Restart button
     const restartButton = this.add.bitmapText(
       this.cameras.main.centerX, 
       yPosition + 25, 
@@ -220,7 +286,7 @@ class gameOverScene extends Phaser.Scene {
     });
   }
 
-  // Function to format numbers with leading zeros
+  // Function to add leading zeros to a number
   zeroPad(number, size) {
     let stringNumber = String(number);
     while (stringNumber.length < (size || 2)) {
