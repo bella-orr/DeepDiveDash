@@ -23,6 +23,7 @@ class startScene extends Phaser.Scene {
     this.load.image("fish3", "assets/images/fish-3.png");
     this.load.image("pufferFish", "assets/images/puffer-fish.png");
     this.load.image("eel", "assets/images/eel.png");
+    //this.load.image("background night", "assests/images/bgNight.png");
 
     this.load.image("sand1", "assets/images/sand1.png");
     this.load.image("sand2", "assets/images/sand2.png");

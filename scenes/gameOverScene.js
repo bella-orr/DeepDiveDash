@@ -269,6 +269,46 @@ async saveScoreToServer() {
       10
     );
 
+    
+    // --- New Joke Feature Integration ---  
+    // Add a button for getting a joke on the game over screen  
+    this.jokeButton = this.add.bitmapText(  
+      this.cameras.main.centerX,  
+      480,  
+      'arcadeFont',  
+      'Get a Joke!',  
+      13
+    ).setOrigin(0.5).setInteractive();  
+  
+    // Add a text object for displaying the joke  
+    this.jokeText = this.add.bitmapText(  
+      this.cameras.main.centerX,  
+      540,  
+      'arcadeFont',  
+      '',  
+      13  
+    ).setOrigin(0.5).setCenterAlign();  
+  
+    // Button interactivity for the joke button  
+    this.jokeButton.on('pointerover', () => this.jokeButton.setTint(0x00ff00));  
+    this.jokeButton.on('pointerout', () => this.jokeButton.clearTint());  
+    this.jokeButton.on('pointerdown', () => {  
+      fetch('https://v2.jokeapi.dev/joke/Programming?safe-mode')  
+        .then(response => response.json())  
+        .then(data => {  
+          if(data.type === "single") {  
+            this.jokeText.setText(data.joke);  
+          } else {  // for two-part jokes  
+            this.jokeText.setText(data.setup + "\n\n" + data.delivery);  
+          }  
+        })  
+        .catch(error => {  
+          this.jokeText.setText("Couldn't fetch a joke right now!");  
+        });  
+    });  
+    // --- End Joke Feature Integration ---  
+  
+
     // Restart button
     const restartButton = this.add.bitmapText(
       this.cameras.main.centerX, 

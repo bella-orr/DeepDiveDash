@@ -1,13 +1,58 @@
-<!DOCTYPE html>  
-<html>  
-    <head>  
-        <title>Deep Dive Dash</title>  
-        <link rel="stylesheet" href="styles.css">  
-        <script type="text/javascript" src="phaser.min.js"></script>  
-        <script type="text/javascript" src="scenes/startScene.js"></script>  
-        <script type="text/javascript" src="scenes/playScene.js"></script>  
-        <script type="text/javascript" src="scenes/gameOverScene.js"></script>  
-        <script type="text/javascript" src="game.js"></script>  
-    </head>  
-    <body> </body>  
+<!DOCTYPE html>    
+<html>    
+    <head>    
+        <title>Deep Dive Dash</title>    
+        <link rel="stylesheet" href="styles.css">    
+        <script type="text/javascript" src="phaser.min.js"></script>    
+        <script type="text/javascript" src="scenes/startScene.js"></script>    
+        <script type="text/javascript" src="scenes/playScene.js"></script>    
+        <script type="text/javascript" src="scenes/gameOverScene.js"></script>    
+        <script type="text/javascript" src="game.js"></script>    
+    </head>    
+    <body>  
+        <!-- Geolocation Container -->  
+        <div id="geo-container" style="position: absolute; top: 10px; left: 10px; z-index: 1000;">  
+            <button id="geoButton">Get Location</button>  
+            <div id="location" style="color: coral; margin-top: 5px;"></div>  
+        </div>  
+  
+        <script>  
+            document.getElementById('geoButton').addEventListener('click', function() {  
+                if (navigator.geolocation) {  
+                    navigator.geolocation.getCurrentPosition(  
+                        function(position) {  
+                            // Get the latitude and longitude  
+                            const lat = position.coords.latitude;  
+                            const lon = position.coords.longitude;  
+                              
+                            // Use OpenStreetMap's Nominatim service to get address details  
+                            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)  
+                                .then(response => response.json())  
+                                .then(data => {  
+                                    // Extract city and state from the address  
+                                    const address = data.address;  
+                                    const city = address.city || address.town || address.village || "Unknown City";  
+                                    const state = address.state || "Unknown State";  
+                                      
+                                    // Display the location  
+                                    document.getElementById('location').innerText =  
+                                        `City: ${city}\nState: ${state}`;  
+                                })  
+                                .catch(error => {  
+                                    document.getElementById('location').innerText =  
+                                        "Error getting location details";  
+                                });  
+                        },  
+                        function(error) {  
+                            document.getElementById('location').innerText =  
+                                "Error: " + error.message;  
+                        }  
+                    );  
+                } else {  
+                    document.getElementById('location').innerText =  
+                        "Geolocation is not supported by your browser.";  
+                }  
+            });  
+        </script>  
+    </body>    
 </html>  
